@@ -1,0 +1,87 @@
+version: "3.8"
+services:
+  app:
+    build: .
+    volumes:
+      - .:/django
+    ports:
+      - 8001:8001
+    image: app:django
+    container_name: django_container
+    command: python manage.py runserver 0.0.0.0:8001
+    depends_on:
+      - db 
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - "POSTGRES_HOST_AUTH_METHOD:trust"
+      - POSTGRES_DB=clidb
+      - POSTGRES_USER=cliuser
+      - POSTGRES_PASSWORD=clipass
+    container_name: postg_db
+  # chrome:
+  #   image: selenium/node-chrome:3.14.0-gallium
+  #   restart: always
+  #   volumes:
+  #       - /dev/shm:/dev/shm
+  #   depends_on:
+  #       - hub
+  #   environment:
+  #       HUB_HOST: hub
+  # hub:
+  #   image: selenium/hub:3.14.0-gallium
+  #   ports:
+  #       - "4444:4444"  
+  chrome:
+    image: selenium/node-chrome:4.0.0-rc-1-prerelease-20210618
+    # image: selenium/node-chrome:4.0.0-rc-1-prerelease-20210713
+    # image: selenium/standalone-docker:4.0.0-rc-1-prerelease-20210713                                                 
+    # image: selenium/standalone-chrome:latest
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    ports:
+      - "6900:5900"
+
+  edge:
+    image: selenium/node-edge:4.0.0-rc-1-prerelease-20210618
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    ports:
+      - "6901:5900"
+
+  firefox:
+    image: selenium/node-firefox:4.0.0-rc-1-prerelease-20210618
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - selenium-hub
+    environment:
+      - SE_EVENT_BUS_HOST=selenium-hub
+      - SE_EVENT_BUS_PUBLISH_PORT=4442
+      - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
+    ports:
+      - "6902:5900"
+
+  selenium-hub:
+    image: selenium/hub:4.0.0-rc-1-prerelease-20210618
+    ports:
+      - "4442:4442"
+      - "4443:4443"
+      - "4444:4444"
+  
+   

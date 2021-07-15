@@ -6,8 +6,7 @@ psycopg2-binary>=2.8
 djangorestframework==3.12.4
 selenium==3.141.0
 PyVirtualDisplay==2.2
-# ChromeDriver==91.0.4472.114
-# Version  (Official Build) (64-bit)
+
 
 
 

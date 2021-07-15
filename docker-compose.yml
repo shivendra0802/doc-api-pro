@@ -22,24 +22,8 @@ services:
       - POSTGRES_USER=cliuser
       - POSTGRES_PASSWORD=clipass
     container_name: postg_db
-  # chrome:
-  #   image: selenium/node-chrome:3.14.0-gallium
-  #   restart: always
-  #   volumes:
-  #       - /dev/shm:/dev/shm
-  #   depends_on:
-  #       - hub
-  #   environment:
-  #       HUB_HOST: hub
-  # hub:
-  #   image: selenium/hub:3.14.0-gallium
-  #   ports:
-  #       - "4444:4444"  
   chrome:
     image: selenium/node-chrome:4.0.0-rc-1-prerelease-20210618
-    # image: selenium/node-chrome:4.0.0-rc-1-prerelease-20210713
-    # image: selenium/standalone-docker:4.0.0-rc-1-prerelease-20210713                                                 
-    # image: selenium/standalone-chrome:latest
     volumes:
       - /dev/shm:/dev/shm
     depends_on:
@@ -50,7 +34,6 @@ services:
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
     ports:
       - "6900:5900"
-
   edge:
     image: selenium/node-edge:4.0.0-rc-1-prerelease-20210618
     volumes:
@@ -63,7 +46,6 @@ services:
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
     ports:
       - "6901:5900"
-
   firefox:
     image: selenium/node-firefox:4.0.0-rc-1-prerelease-20210618
     volumes:
@@ -76,7 +58,6 @@ services:
       - SE_EVENT_BUS_SUBSCRIBE_PORT=4443
     ports:
       - "6902:5900"
-
   selenium-hub:
     image: selenium/hub:4.0.0-rc-1-prerelease-20210618
     ports:
